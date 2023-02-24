@@ -1,58 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useState, useRef, useEffect } from 'react';
+import Header from './components/header/Header.js';
+import Subreddits from './components/subreddits/Subreddits.js';
+import Posts from './components/posts/Posts.js';
 import './App.css';
 
+
 function App() {
+  const [subredditsDisplay, setSubredditsDisplay] = useState(false);
+  const subredditsAside = useRef(null);
+
+  useEffect(() => {
+    const showHideSubredditsAside = () => {
+    const width = window.innerWidth;
+      
+      if (width > 1290) {
+        subredditsAside.current.classList.remove('hide');
+
+      } else {
+        if (subredditsDisplay) {
+          subredditsAside.current.classList.remove('hide');
+        }
+        else {
+          subredditsAside.current.classList.add('hide');
+        };
+      }
+    }
+
+    showHideSubredditsAside();
+
+    // set resize listener
+    window.addEventListener('resize', showHideSubredditsAside);
+
+    // clean up function
+    return () => {
+      // remove resize listener
+      window.removeEventListener('resize', showHideSubredditsAside);
+    }
+
+  }, [subredditsDisplay])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <header><Header subredditsDisplay={subredditsDisplay} setSubredditsDisplay={setSubredditsDisplay} /></header>
+      <main>
+        <aside className='subreddits-aside' ref={subredditsAside} >
+          <Subreddits />
+        </aside>
+        <section className='posts-section'>
+          <Posts />
+        </section>
+      </main>
+    </>
   );
 }
 
 export default App;
+
+

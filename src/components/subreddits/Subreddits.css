@@ -1,0 +1,20 @@
+.subreddits-div{
+    width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
+}
+
+.moon-loader{
+    margin: auto;
+    margin-top: 10px;
+}
+
+.error-loading-subreddits-div{
+    width: 90%;
+    height: 50px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
