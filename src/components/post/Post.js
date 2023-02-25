@@ -59,12 +59,20 @@ function Post(props) {
 
     const getComments = async () => {
         setCommentsPending(true);
+        
         setCommentsHasError(false);
-        const response = await fetch('https://www.reddit.com' + props.post.data.permalink + '.json');
+        let response;
+        try {
+            response = await fetch('https://www.reddit.com' + props.post.data.permalink + '.json');
+        } catch (error) {
+            console.log(error)
+        } 
         if (response.ok) {
             const jsonResponse = await response.json();
             setComments(jsonResponse[1].data.children);
-        }else setCommentsHasError(true);
+        }
+        else setCommentsHasError(true);
+
         setCommentsPending(false);
     }
 

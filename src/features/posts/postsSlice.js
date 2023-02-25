@@ -1,4 +1,5 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getSubredditPosts } from '../../api/index.js';
 
 const initialState = {
     posts: [],
@@ -9,10 +10,12 @@ const initialState = {
 
 export const loadPosts = createAsyncThunk(
     'posts/loadPosts',
-    async(subreddit) => {
-       const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
-       const jsonResponse = await response.json();
-       return jsonResponse.data.children; 
+    async (subreddit) => {
+        // let response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
+        // const jsonResponse = await response.json();
+        // return jsonResponse.data.children;  
+        const subredditsPosts = getSubredditPosts(subreddit);
+        return subredditsPosts;
     }
 )
 
@@ -24,7 +27,7 @@ export const postsSlice = createSlice({
             state.searchTerm = action.payload;
         },
     },
-    extraReducers:{
+    extraReducers: {
         [loadPosts.pending]: (state) => {
             state.isPending = true;
             state.hasError = false;
@@ -34,7 +37,7 @@ export const postsSlice = createSlice({
             state.hasError = false;
             state.posts = action.payload;
         },
-        [loadPosts.hasError]: (state) => {
+        [loadPosts.rejected]: (state) => {
             state.isPending = false;
             state.hasError = true;
         }
@@ -50,6 +53,6 @@ export const selectIsPending = (state) => state.posts.isPending;
 export const selectHasError = (state) => state.posts.hasError;
 export const selectSearchTerm = (state) => state.posts.searchTerm;
 
-export const {setSearchTerm} = postsSlice.actions;
+export const { setSearchTerm } = postsSlice.actions;
 
 export default postsSlice.reducer

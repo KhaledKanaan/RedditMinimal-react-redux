@@ -1,46 +1,122 @@
-# Getting Started with Create React App and Redux
+# RedditMinimal
+## Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+RedditMinimal is a simplified Reddit app built using Reddit API. This application allows users to view and search posts and comments provided by the API based on the selected subreddit topic. 
 
-## Available Scripts
+## Project features
 
-In the project directory, you can run:
+* Users can use the application on any device (desktop to mobile)
+* Users can use the application on any modern browser
+* Users can access the application at a [URL]
+* Users see an initial view of the data when first visiting the app
+* Users can search the data using terms
+* Users can filter the data based on categories that are predefined
+* Users are shown a detailed view (modal or new page/route) when they select an item
+* Users are delighted with a cohesive design system
+* Users are delighted with animations and transitions
+* Users are able to leave an error state
 
-### `npm start`
+## Used technologies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* React
+* Redux
+* HTML
+* CSS
+* JavaScript
+* Git and GitHub
+* Command line and file navigation
+* Wireframing
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Reddit API
 
-### `npm test`
+RedditMinimal uses the [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON). 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Note that Reddit has 2 APIs: [the official API](https://www.reddit.com/dev/api/) and an [undocumented JSON API](https://github.com/reddit-archive/reddit/wiki/JSON). Using the JSON API does have limitations such as no write operations. For the purposes of this project, I found the JSON API adequate.
 
-### `npm run build`
+You can take any Reddit URL, add .json at the end of it, and get JSON. For example, if you want to get the Popular page data in JSON:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Original URL: https://www.reddit.com/r/popular/
+JSON URL: https://www.reddit.com/r/popular.json
+If you want to search for “cake recipes”:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Original URL: https://www.reddit.com/search?q=cake%20recipes
+JSON URL: https://www.reddit.com/search.json?q=cake%20recipes
+Notice here .json was not added at the end of the URL. It's actually added before the start of the query string. Refer to [this article](https://www.quora.com/What-are-the-parts-of-a-URL) for a breakdown of the structure of a URL.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Retrieve all the Subreddits array
+To retrieve an array of all the Subreddits objects a fetch with GET request to 'https://www.reddit.com/subreddits.json' should be executed as follows: 
+```javascript
+const response = await fetch(`https://www.reddit.com/subreddits.json`);
+```
+The response should be parsed into a JSON as follows: 
+```javascript
+const jsonResponse = await response.json();
+```
+An array of all the Subreddits objects can be found at jsonResponse.data.children:
+```javascript
+return jsonResponse.data.children;
+```
 
-### `npm run eject`
+### Retrieve all the Subreddits array
+To retrieve an array of all the Subreddits objects a fetch with GET request to 'https://www.reddit.com/subreddits.json' should be executed as follows: 
+```javascript
+const response = await fetch(`https://www.reddit.com/subreddits.json`);
+```
+The response should be parsed into a JSON as follows: 
+```javascript
+const jsonResponse = await response.json();
+```
+An array of all the Subreddits objects can be found at jsonResponse.data.children:
+```javascript
+return jsonResponse.data.children;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The full function should look like: 
+```javascript
+export const getSubreddits = async () => {
+    const response = await fetch(`https://www.reddit.com/subreddits.json`);
+    const jsonResponse = await response.json();
+    return jsonResponse.data.children;
+}
+``` 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Retrieve all Posts related to a given Subreddit
+To retrieve an array of all the Posts within a Subreddit topic a fetch with GET request to 'https://www.reddit.com/r/${subreddit}.json' should be executed as follows: 
+```javascript
+const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
+```
+The response should be parsed into a JSON as follows: 
+```javascript
+const jsonResponse = await response.json();
+```
+An array of all the Posts objects can be found at jsonResponse.data.children:
+```javascript
+return jsonResponse.data.children;
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The full function should look like: 
+```javascript
+export const getSubredditPosts = async (subreddit) => {
+    const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
+    const jsonResponse = await response.json();
+    return jsonResponse.data.children;
+}
+``` 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Project planning and wireframing
 
-## Learn More
+The application consists of three main components: Header, Subreddits and Posts:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### The Header
+The Header is a React component within an html header element and contains the logo+title of the application, the menu button (hidden on big screens) and the search form
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### The Subreddits navigator
+The Subreddits is a react component within an html aside element that displays all the retrieved Subreddits.
+For each subreddit retrieved from Reddit JSON API a new Subreddit react component will be displayed within the Subreddits component, and will be showing the title of the subreddit, the logo and the selection status
+
+### The Posts
+The Posts is a react component within an html section element that displays all the retrieved Posts
+For each post retrieved from Reddit JSON API a new Post react component will be displayed within the Subreddits component, and will be showing all the details of the post (votes, posted by, timing, media, number of comments...). the comments on the post will also be attached to the Post component (initially hidden) and will be shown/hidden when the user clicks on the comment button.
+
+### Wireframe
+![wireframe](client\wireframe.png)

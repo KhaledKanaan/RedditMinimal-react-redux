@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getSubreddits } from '../../api/index.js';
 
 const initialState = {
     subreddits: [],
@@ -10,9 +11,11 @@ const initialState = {
 export const loadSubreddits = createAsyncThunk(
     'subreddits/loadSubreddits',
     async() => {
-        const response = await fetch('https://www.reddit.com/subreddits.json');
-        const jsonResponse = await response.json();
-        return jsonResponse.data.children; 
+        // const response = await fetch('https://www.reddit.com/subreddits.json');
+        // const jsonResponse = await response.json();
+        // return jsonResponse.data.children; 
+        const allSubreddits = getSubreddits();
+        return allSubreddits;
     }
 )
 
