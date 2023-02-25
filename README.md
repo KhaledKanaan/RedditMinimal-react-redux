@@ -27,6 +27,24 @@ RedditMinimal is a simplified Reddit app built using Reddit API. This applicatio
 * Command line and file navigation
 * Wireframing
 
+## Project planning and wireframing
+
+The application consists of three main components: Header, Subreddits and Posts:
+
+### The Header
+The Header is a React component within an html header element and contains the logo+title of the application, the menu button (hidden on big screens) and the search form
+
+### The Subreddits navigator
+The Subreddits is a react component within an html aside element that displays all the retrieved Subreddits.
+For each subreddit retrieved from Reddit JSON API a new Subreddit react component will be displayed within the Subreddits component, and will be showing the title of the subreddit, the logo and the selection status
+
+### The Posts
+The Posts is a react component within an html section element that displays all the retrieved Posts
+For each post retrieved from Reddit JSON API a new Post react component will be displayed within the Subreddits component, and will be showing all the details of the post (votes, posted by, timing, media, number of comments...). the comments on the post will also be attached to the Post component (initially hidden) and will be shown/hidden when the user clicks on the comment button.
+
+### Wireframe
+![wireframe](wireframe.png)
+
 ## Reddit API
 
 RedditMinimal uses the [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON). 
@@ -102,21 +120,3 @@ export const getSubredditPosts = async (subreddit) => {
     return jsonResponse.data.children;
 }
 ``` 
-
-## Project planning and wireframing
-
-The application consists of three main components: Header, Subreddits and Posts:
-
-### The Header
-The Header is a React component within an html header element and contains the logo+title of the application, the menu button (hidden on big screens) and the search form
-
-### The Subreddits navigator
-The Subreddits is a react component within an html aside element that displays all the retrieved Subreddits.
-For each subreddit retrieved from Reddit JSON API a new Subreddit react component will be displayed within the Subreddits component, and will be showing the title of the subreddit, the logo and the selection status
-
-### The Posts
-The Posts is a react component within an html section element that displays all the retrieved Posts
-For each post retrieved from Reddit JSON API a new Post react component will be displayed within the Subreddits component, and will be showing all the details of the post (votes, posted by, timing, media, number of comments...). the comments on the post will also be attached to the Post component (initially hidden) and will be shown/hidden when the user clicks on the comment button.
-
-### Wireframe
-![wireframe](client\wireframe.png)
