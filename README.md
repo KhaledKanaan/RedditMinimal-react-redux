@@ -7,7 +7,7 @@ RedditMinimal is a simplified Reddit app built using Reddit API. This applicatio
 
 * Users can use the application on any device (desktop to mobile)
 * Users can use the application on any modern browser
-* Users can access the application at a [URL]
+* Users can access the application at a [URL](https://reddit-min-khaledkanaan.netlify.app/)
 * Users see an initial view of the data when first visiting the app
 * Users can search the data using terms
 * Users can filter the data based on categories that are predefined
